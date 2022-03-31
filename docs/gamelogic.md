@@ -15,7 +15,7 @@
 
 All board positions are primarily dealt with in the in the form xy.
 
-The entire board can be exported and imported as a string with a notation system I derived from Forsyth–Edwards Notation (FEN). Each row is given from top to bottom separated with a slash `/`. `b` represents a black disk, `w` represents a white disk, and a number like `2` represents the number of empty spaces. Finally, a letter (either `b` or `w`) at the end signifies whose turn it is.
+The entire board can be exported and imported as a string with a notation system derived from Forsyth–Edwards Notation (FEN) which is named Short Reversi Notation (SRN). Each row is given from top to bottom separated with a slash `/`. `b` represents a black disk, `w` represents a white disk, and a number like `2` represents the number of empty spaces. Finally, a letter (either `b` or `w`) at the end signifies whose turn it is.
 
 The starting position in Reversi can be represented with the string:
 `8/8/8/3wb3/3bw3/8/8/8 b`.
