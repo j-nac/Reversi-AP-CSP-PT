@@ -4,9 +4,10 @@ from re import L
 
 class Board:
     def __init__(self, color='b', srn='8/8/8/3wb3/3bw3/8/8/8 b', turn='b'):
-        pass
+        self.generate_board(srn)
+        self.update_score()
 
-    def read_srn(self, srn):
+    def generate_board(self, srn):
         nboard, self.turn = srn.split()
         
         rows = nboard.split('/')
@@ -32,5 +33,11 @@ class Board:
 
     def move(self, move):
         pass
+
+    def update_score(self):
+        self.empty_count = sum([row.count(0) for row in self.board])
+        self.black_count = sum([row.count(1) for row in self.board])
+        self.white_count = sum([row.count(2) for row in self.board])
+
 b = Board()
-b.read_srn('8/8/8/3wb3/3bw3/8/8/8 b')
+print(b.empty_count)
