@@ -3,7 +3,7 @@ from re import L
 
 
 class Board:
-    def __init__(self, color='b', srn='8/8/8/3wb3/3bw3/8/8/8 b', turn='b'):
+    def __init__(self, srn='8/8/8/3wb3/3bw3/8/8/8 b'):
         self.generate_board(srn)
         self.update_score()
 
@@ -27,18 +27,20 @@ class Board:
     def get_srn(self):
         pass
 
-    def get_legal_positions(self, move):
+    def get_legal_moves(self, color_num: int) -> list:
+        legal_moves = []
 
-        # Start N, go clockwise
-        directions = [(0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0), (-1, 1)]
-
-        for row in self.board:
-            for square in row:
-                if square == 1 or square == 2:
-                    pass
+        for y, row in enumerate(self.board):
+            for x, square in enumerate(row):
+                if square == 0:
+                    coords = (x, y)
+                    if self.check_move_flips(coords, color_num):
+                        legal_moves.append(coords)
+        
+        return legal_moves
     
 
-    def check_move_flips(self, coords, color_num):
+    def check_move_flips(self, coords: tuple, color_num: int) -> list:
         flips = []
         directions = [(0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0), (-1, 1)]
 
@@ -49,7 +51,6 @@ class Board:
 
         for d in directions:
             test_coords = tuple(map(sum, zip(coords, d)))
-            print(test_coords)
             if self.is_in_bounds(test_coords):
                 test_square = self.board[test_coords[1]][test_coords[0]]
                 # Check if opposite color in between
@@ -88,4 +89,4 @@ class Board:
         return True
 
 b = Board()
-print(b.check_move_flips((4, 5), 1))
+print(b.get_legal_moves(2))
