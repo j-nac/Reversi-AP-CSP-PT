@@ -2,7 +2,6 @@ from curses.ascii import isdigit
 from re import L
 from turtle import update
 
-
 class Board:
     def __init__(self, srn='8/8/8/3wb3/3bw3/8/8/8 b'):
         self.generate_board(srn)
@@ -95,7 +94,24 @@ class Board:
             if c < 0 or c > 7:
                 return False
         return True
+    
+    def check_gameover(self):
+        return not (self.get_legal_moves(1) or self.get_legal_moves(2))
 
 if __name__ == '__main__':
     board = Board()
-    
+    while True:
+        if board.check_gameover:
+            if board.black_count > board.white_count:
+                print('Black side wins')
+            elif board.white_count > board.black_count:
+                print('White side wins')
+            else:
+                print('Draw')
+            break
+
+        side = 1
+        try:
+            ans = int(input("What do you want to do?\n1. Move\n2. Get legal moves\n3. Give up\n> "))
+        except TypeError
+        # Switch color: side = ((side - 1.5) * -2 + 3) / 2

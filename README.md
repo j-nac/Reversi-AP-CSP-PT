@@ -1,1 +1,1 @@
-# Reversi-AP-CSP-PT
+# Reversi - AP Computer Science Principles Performance Task
