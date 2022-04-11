@@ -1,11 +1,15 @@
 from curses.ascii import isdigit
 from re import L
+from turtle import update
 
 
 class Board:
     def __init__(self, srn='8/8/8/3wb3/3bw3/8/8/8 b'):
         self.generate_board(srn)
         self.update_score()
+    
+    def __repr__(self):
+        return '\n'.join(['  '.join([str(c) for c in b]) for b in self.board])
 
     def generate_board(self, srn):
         nboard, self.turn = srn.split()
@@ -74,8 +78,12 @@ class Board:
         
         return flips
                     
-    def execute_move(self, coords):
-        pass
+    def execute_move(self, coords, color_num):
+        flips = self.check_move_flips(coords, color_num)
+        self.board[coords[1]][coords[0]] = color_num
+        for f in flips:
+            self.board[f[1]][f[0]] = color_num
+        self.update_score()
 
     def update_score(self):
         self.empty_count = sum([row.count(0) for row in self.board])
@@ -89,4 +97,7 @@ class Board:
         return True
 
 b = Board()
+print(b.get_legal_moves(1))
+b.execute_move((4, 5), 1)
+print(b)
 print(b.get_legal_moves(2))
