@@ -96,8 +96,6 @@ class Board:
                 return False
         return True
 
-b = Board()
-print(b.get_legal_moves(1))
-b.execute_move((4, 5), 1)
-print(b)
-print(b.get_legal_moves(2))
+if __name__ == '__main__':
+    board = Board()
+    

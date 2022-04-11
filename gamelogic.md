@@ -38,6 +38,14 @@ Board.board = [
 
 ## Get Legal Turns
 
+The number of "flips" are determined with the check_move_flips method. It checks each direction at a time first if there is the opposite color adjacent then for the anchor. If there is at least one flip, it is a legal move.
 
+The get_legal_moves method iterates through each empty square to determine legal moves.
 
 ## Execute a turn
+
+The check_move_flips method is run again (an inefficiency I don't care to fix) to get the coordinates for flips then updates the board to reflect the flips.
+
+## Bot Play
+
+The current bot simply gets and executes random legal moves.
