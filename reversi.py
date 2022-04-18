@@ -1,7 +1,3 @@
-from curses.ascii import isdigit
-from re import L
-from turtle import update
-
 class Board:
     def __init__(self, srn='8/8/8/3wb3/3bw3/8/8/8 b'):
         self.generate_board(srn)
@@ -77,7 +73,7 @@ class Board:
         
         return flips
                     
-    def execute_move(self, coords, color_num):
+    def execute_move(self, coords: tuple, color_num: int):
         flips = self.check_move_flips(coords, color_num)
         self.board[coords[1]][coords[0]] = color_num
         for f in flips:
@@ -96,22 +92,39 @@ class Board:
         return True
     
     def check_gameover(self):
-        return not (self.get_legal_moves(1) or self.get_legal_moves(2))
+        if not (self.get_legal_moves(1) or self.get_legal_moves(2)):
+            if self.black_count > self.white_count:
+                return 'Black side wins'
+            elif self.white_count > self.black_count:
+                return 'White side wins'
+            else:
+                return 'Draw'
+        else:
+            return False
 
 if __name__ == '__main__':
     board = Board()
+    side = 1
     while True:
-        if board.check_gameover:
-            if board.black_count > board.white_count:
-                print('Black side wins')
-            elif board.white_count > board.black_count:
-                print('White side wins')
-            else:
-                print('Draw')
+        print(board)
+
+        is_gameover = board.check_gameover()
+        if is_gameover:
+            print(is_gameover)
             break
 
-        side = 1
-        try:
-            ans = int(input("What do you want to do?\n1. Move\n2. Get legal moves\n3. Give up\n> "))
-        except TypeError
+        ans = int(input('What do you want to do?\n1. Move\n2. Get legal moves\n3. Give up\n> '))
+
+        if ans == 1:
+            i = input('What is your move? Format as x,y\n> ').split(',')
+            x, y = [int(a) for a in i]
+            board.execute_move((x,y), side)
+            side = round(((side - 1.5) * -2 + 3) / 2)
+        elif ans == 2:
+            print(board.get_legal_moves(side))
+        elif ans == 3:
+            print('Lol')
+            break
+            
+        
         # Switch color: side = ((side - 1.5) * -2 + 3) / 2
