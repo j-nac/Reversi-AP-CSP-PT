@@ -1,10 +1,12 @@
+import os
+
 class Board:
     def __init__(self, srn='8/8/8/3wb3/3bw3/8/8/8 b'):
         self.generate_board(srn)
         self.update_score()
     
-    def __repr__(self):
-        return '\n'.join(['  '.join([str(c) for c in b]) for b in self.board])
+    def __str__(self):
+        return '  ' + '  '.join(list('ABCDEFGH')) + '\n' + '\n'.join([str(i+1) + ' ' + '  '.join(['-' if c == 0 else 'B' if c == 1 else 'W' for c in b]) for i,b in enumerate(self.board)])
 
     def generate_board(self, srn):
         nboard, self.turn = srn.split()
@@ -102,8 +104,25 @@ class Board:
         else:
             return False
 
+def ask_user(question, options):
+    while True:
+        print(question)
+        for i, option in enumerate(options):
+            print(f'{i+1}. {option}')
+        answer = input('> ')
+        try:
+            if int(answer) < 1 or int(answer) > len(options):
+                raise
+            else:
+                return int(answer)
+        except Exception:
+            input(f'You must enter a number from 1 to {len(options)} as your answer.\nHit ENTER to continue\n')
+
 if __name__ == '__main__':
     board = Board()
+
+    mode = ask_user('Select a game mode', ['Single player', 'Two players'])
+
     side = 1
     while True:
         print(board)
@@ -113,11 +132,13 @@ if __name__ == '__main__':
             print(is_gameover)
             break
 
-        ans = int(input('What do you want to do?\n1. Move\n2. Get legal moves\n3. Give up\n> '))
+        ans = ask_user('What do you want to do?', ['Move', 'Get legal moves', 'Give up'])
 
         if ans == 1:
             i = input('What is your move? Format as x,y\n> ').split(',')
             x, y = [int(a) for a in i]
+            if not (x,y) in board.get_legal_moves():
+                print('WOAH')
             board.execute_move((x,y), side)
             side = round(((side - 1.5) * -2 + 3) / 2)
         elif ans == 2:
