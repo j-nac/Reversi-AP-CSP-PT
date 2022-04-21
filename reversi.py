@@ -135,11 +135,25 @@ if __name__ == '__main__':
         ans = ask_user('What do you want to do?', ['Move', 'Get legal moves', 'Give up'])
 
         if ans == 1:
-            i = input('What is your move? Format as x,y\n> ').split(',')
-            x, y = [int(a) for a in i]
-            if not (x,y) in board.get_legal_moves():
-                print('WOAH')
-            board.execute_move((x,y), side)
+            while True:
+                try:
+                    raw_move = input('What is your move? Format as XY (Ex. C7)\n> ')
+                    if len(raw_move) != 2:
+                        raise
+                    if raw_move[1] not in ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']:
+                        raise
+                    if int(raw_move[2]) not in [1, 2, 3, 4, 5, 6, 7, 8]:
+                        raise
+                    move = (['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'].index(raw_move[0]), int(raw_move[1]))
+
+                    if move not in board.get_legal_moves():
+                        raise
+                    else:
+                        break
+                except Exception:
+                    input(f'You must enter a legal move in the form XY as your answer. (Ex. G2)\nHit ENTER to continue\n')
+
+            board.execute_move(move, side)
             side = round(((side - 1.5) * -2 + 3) / 2)
         elif ans == 2:
             print(board.get_legal_moves(side))
@@ -148,4 +162,4 @@ if __name__ == '__main__':
             break
             
         
-        # Switch color: side = ((side - 1.5) * -2 + 3) / 2
+        # Switch color: side = round(((side - 1.5) * -2 + 3) / 2)
