@@ -12,6 +12,7 @@ class Board:
         return '  ' + '  '.join(list('ABCDEFGH')) + '\n' + '\n'.join([str(i+1) + ' ' + '  '.join(['-' if c == 0 else 'B' if c == 1 else 'W' for c in b]) for i,b in enumerate(self.board)])
 
     def generate_board(self, srn):
+        # Board stored as 2d array with 0 for empty, 1 black, 2 white
         nboard, self.turn = srn.split()
         
         rows = nboard.split('/')
@@ -88,6 +89,8 @@ class Board:
         return flips
     
     def execute_move(self, coords: tuple, color_num: int):
+        # Uses flips from get get_legal_moves and flips
+        # Does not check if legal move
         flips = self.check_move_flips(coords, color_num)
         self.board[coords[1]][coords[0]] = color_num
         for f in flips:
@@ -106,6 +109,7 @@ class Board:
         return True
     
     def check_gameover(self):
+        # Determine if game over, get totals, return winner if any
         if not (self.get_legal_moves(1) or self.get_legal_moves(2)):
             total = f'Black {self.black_count} - White {self.white_count}'
             if self.black_count > self.white_count:
