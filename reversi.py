@@ -188,6 +188,10 @@ if __name__ == '__main__':
             if mode == 1:
                 os.system('cls')
                 print(board)
+                is_gameover = board.check_gameover()
+                if is_gameover:
+                    print(is_gameover)
+                    break
                 input('Hit ENTER to continue')
                 for x in range(4):
                     os.system('cls')
