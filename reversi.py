@@ -8,6 +8,7 @@ class Board:
         self.update_score()
     
     def __str__(self):
+        # Converts numbers to symbols, adds column names, then returns properly formatted board
         return '  ' + '  '.join(list('ABCDEFGH')) + '\n' + '\n'.join([str(i+1) + ' ' + '  '.join(['-' if c == 0 else 'B' if c == 1 else 'W' for c in b]) for i,b in enumerate(self.board)])
 
     def generate_board(self, srn):
@@ -48,14 +49,19 @@ class Board:
     
 
     def check_move_flips(self, coords: tuple, color_num: int) -> list:
+        '''
+        1. Iterates through all 8 linear directions
+        2. For each direction, ensure opposite color adjacent and save position
+        3. If finds anchor, save. Otherwise discard
+        4. Return all legal moves
+        '''
         flips = []
         directions = [(0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0), (-1, 1)]
 
         if not(color_num == 1 or color_num == 2):
             raise ValueError('color_num must be 1 or 2')
         
-        opp_color = ((color_num - 1.5) * -2 + 3) / 2
-
+        opp_color = 1 if side == 2 else 2
         for d in directions:
             test_coords = tuple(map(sum, zip(coords, d)))
             if self.is_in_bounds(test_coords):
@@ -80,7 +86,7 @@ class Board:
                         break
         
         return flips
-                    
+    
     def execute_move(self, coords: tuple, color_num: int):
         flips = self.check_move_flips(coords, color_num)
         self.board[coords[1]][coords[0]] = color_num
@@ -151,11 +157,13 @@ if __name__ == '__main__':
 
     side = 1
     while True:
+        # Check if gameover
         is_gameover = board.check_gameover()
         if is_gameover:
             print(is_gameover)
             break
 
+        # Check user can make a legal move
         if len(board.get_legal_moves(side)) == 0:
             input('There are no legal moves that can be performed this turn\nHit ENTER to continue\n')
             continue
@@ -163,6 +171,7 @@ if __name__ == '__main__':
         ans = ask_user(str(board) + ('\nBlack side\'s turn' if side == 1 else '\nWhite side\'s turn') + '\nWhat do you want to do?', ['Move', 'Get legal moves', 'Give up'])
 
         if ans == 1:
+            # Get user move
             while True:
                 try:
                     os.system('cls')
@@ -188,6 +197,7 @@ if __name__ == '__main__':
             if mode == 1:
                 os.system('cls')
                 print(board)
+                # Another gameover check if move skip
                 is_gameover = board.check_gameover()
                 if is_gameover:
                     print(is_gameover)
