@@ -62,7 +62,7 @@ class Board:
         if not(color_num == 1 or color_num == 2):
             raise ValueError('color_num must be 1 or 2')
         
-        opp_color = 1 if side == 2 else 2
+        opp_color = 1 if color_num == 2 else 2
         for d in directions:
             test_coords = tuple(map(sum, zip(coords, d)))
             if self.is_in_bounds(test_coords):
