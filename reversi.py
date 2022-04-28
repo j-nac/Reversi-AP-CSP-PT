@@ -2,13 +2,15 @@ import os
 import random
 import time
 
+# All code made from scratch by me
+
 class Board:
     def __init__(self, srn='8/8/8/3wb3/3bw3/8/8/8 b'):
         self.generate_board(srn)
         self.update_score()
     
     def __str__(self):
-        # Converts numbers to symbols, adds column names, then returns properly formatted board
+        # Converts numbers to symbols, adds labels for rows, adds a row to label columns, then joins it all together to return the properly formatted board
         return '  ' + '  '.join(list('ABCDEFGH')) + '\n' + '\n'.join([str(i+1) + ' ' + '  '.join(['-' if c == 0 else 'B' if c == 1 else 'W' for c in b]) for i,b in enumerate(self.board)])
 
     def generate_board(self, srn):
@@ -28,9 +30,6 @@ class Board:
                     board[i].append(2)
         
         self.board = board
-
-    def get_srn(self):
-        pass
 
     @staticmethod
     def convert_move_format(move):
