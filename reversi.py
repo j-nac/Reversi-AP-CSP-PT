@@ -164,13 +164,18 @@ if __name__ == '__main__':
         # Check if gameover
         is_gameover = board.check_gameover()
         if is_gameover:
+            os.system('cls')
+            print(board)
             print(is_gameover)
             break
 
-        # Check user can make a legal move
-        if len(board.get_legal_moves(side)) == 0:
-            input('There are no legal moves that can be performed this turn\nHit ENTER to continue\n')
-            continue
+        # Check if legal moves in 2 player mode
+        if mode == 2:
+            if len(board.get_legal_moves(side)) == 0:
+                os.system('cls')
+                input('There are no legal moves that can be performed this turn\nHit ENTER to continue\n')
+                side = 1 if side == 2 else 2
+                continue
 
         ans = ask_user(str(board) + ('\nBlack side\'s turn' if side == 1 else '\nWhite side\'s turn') + '\nWhat do you want to do?', ['Move', 'Get legal moves', 'Give up'])
 
@@ -213,6 +218,12 @@ if __name__ == '__main__':
                     time.sleep(0.5)
                 if len(board.get_legal_moves(2)):
                     board.execute_move(random.choice(board.get_legal_moves(2)), 2)
+                    
+                    # Check user can make a legal move
+                    if len(board.get_legal_moves(side)) == 0:
+                        os.system('cls')
+                        input('There are no legal moves that can be performed this turn\nHit ENTER to continue\n')
+                        continue
                 else:
                     continue
             else:
